@@ -25,9 +25,9 @@ export const Preview = (props: PreviewProps) => {
       if (previewRef?.current == null) {
         return;
       }
-      await faceapi.nets.ssdMobilenetv1.loadFromUri('facenet/models/ssd_mobilenetv1');
-      await faceapi.nets.faceLandmark68Net.loadFromUri('facenet/models/face_landmark_68');
-      await faceapi.nets.faceRecognitionNet.loadFromUri('facenet/models/face_recognition');
+      await faceapi.nets.ssdMobilenetv1.loadFromUri('/facenet/models/ssd_mobilenetv1');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/facenet/models/face_landmark_68');
+      await faceapi.nets.faceRecognitionNet.loadFromUri('/facenet/models/face_recognition');
       const faces = await faceapi
         .detectAllFaces(previewRef.current as faceapi.TNetInput, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()

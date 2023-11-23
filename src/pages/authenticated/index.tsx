@@ -15,8 +15,8 @@ export const Authenticated = () => {
           </AuthenticatedIconContainer>
         </AuthenticatedNotify>
         <AuthenticatedAction>
-          <ActionButton bgColor="#4532CE">Proceed to Home</ActionButton>
-          <ActionButton bgColor="#FFCD29">
+          <ActionButton bgcolor="#4532CE">Proceed to Home</ActionButton>
+          <ActionButton bgcolor="#FFCD29">
             <span style={{ color: '#000' }}>Click Here to Set Up Multi Face Recovery</span>
           </ActionButton>
         </AuthenticatedAction>
@@ -79,11 +79,11 @@ const AuthenticatedIconContainer = styled(Box)(({ theme }) => ({
   marginTop: '30px'
 }));
 
-const ActionButton = styled(Button)<{ bgColor: string }>(({ theme, bgColor }) => ({
+const ActionButton = styled(Button)<{ bgcolor: string }>(({ theme, bgcolor }) => ({
   borderRadius: '4px',
   color: '#FFF',
   width: '100%',
-  backgroundColor: bgColor,
+  backgroundColor: bgcolor,
   fontSize: '16px',
   textTransform: 'none',
   display: 'flex',
@@ -92,7 +92,7 @@ const ActionButton = styled(Button)<{ bgColor: string }>(({ theme, bgColor }) =>
   minHeight: '36px',
   fontWeight: '600',
   '&:hover': {
-    backgroundColor: bgColor
+    backgroundColor: bgcolor
   },
   [theme.breakpoints.down(480)]: {
     fontSize: '14px'

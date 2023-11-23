@@ -61,7 +61,8 @@ export const Camera = (props: CameraProps) => {
   const handleStreamVideo = async () => {
     try {
       console.log('hello stream');
-      await faceapi.nets.tinyFaceDetector.loadFromUri('facenet/models/tiny_face_detector');
+      const net = new faceapi.TinyFaceDetector();
+      await faceapi.nets.tinyFaceDetector.loadFromUri('/facenet/models/tiny_face_detector');
       console.log('I am here');
       let counter = 0;
 

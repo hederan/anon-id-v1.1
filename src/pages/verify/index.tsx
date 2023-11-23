@@ -1,11 +1,18 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AnonLoader } from 'src/components/AnonLoader';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Camera } from 'src/components/FaceLiveness/camera';
+import { saveFileToNFTStorage } from 'src/services/ipfs-service';
+import axios from 'axios';
+import { PRIVATE_ROUTES } from 'src/config/routes';
+import { FetchingDataLoader } from 'src/components/AnonLoader/fechingDataLoader';
+import { localStorageSet } from 'src/utils/localStorage';
+import { useStore } from 'src/context/StoreContext';
 
 export const Verify = () => {
+  const { username } = useParams();
+  const { isLoggedIn, setLoggedIn } = useStore();
   const [faceDescripter, setFaceDescripter] = useState(null);
   const [error, setError] = useState('');
   const [isCameraOpen, setCameraOpen] = useState(true);
@@ -14,14 +21,89 @@ export const Verify = () => {
   const [outline, setOutline] = useState('#ff0000');
   const [screenshot, setScreenshot] = useState(null);
   const navigate = useNavigate();
-  const [isOldUser, setOldUser] = useState(true);
+  const [isOldUser, setOldUser] = useState(false);
+  const [isLoading, setLoading] = useState(true);
+  const [isVerifyLoad, setVerifyLoad] = useState(false);
 
   const turnOnCamera = () => {
     setCameraOpen(true);
     setIsDetected(false);
   };
 
-  return (
+  const uploadFileToIPFS = async (face: any) => {
+    const path = await saveFileToNFTStorage(face);
+    return path;
+  };
+
+  const getOldUser = async () => {
+    try {
+      if (username == null) {
+        return;
+      }
+      const res = await axios.post(`${PRIVATE_ROUTES.server}/auth/getUser`, { username: username });
+      const isReturningUser = res.data.isReturningUser;
+      setOldUser(isReturningUser);
+      setLoading(false);
+    } catch (err) {
+      console.log('getOldUser Error: ', err);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getOldUser();
+  }, []);
+
+  const handleVerify = () => {
+    isOldUser ? handleLogin() : handleRegister();
+  };
+
+  const handleLogin = async () => {
+    try {
+      setVerifyLoad(true);
+      const res = await axios.post(`${PRIVATE_ROUTES.server}/auth/login`, { username, faceDescripter });
+      const token = res.data.token;
+      console.log({ token });
+      localStorageSet('token', token);
+      navigate('/dashboard');
+      setLoggedIn(true);
+      setVerifyLoad(false);
+    } catch (err: any) {
+      console.log('handleLogin Error: ', err);
+      const error = err?.response?.data;
+      setError(error?.message);
+      setVerifyLoad(false);
+    }
+  };
+
+  const handleRegister = async () => {
+    try {
+      setVerifyLoad(true);
+      const hash = await uploadFileToIPFS(screenshot);
+      const res = await axios.post(`${PRIVATE_ROUTES.server}/auth/register`, {
+        username,
+        faceDescripter,
+        ipfsHash: hash
+      });
+      const token = res.data.token;
+      localStorageSet('token', token);
+      setLoggedIn(true);
+      console.log({ token });
+      navigate('/dashboard');
+      setVerifyLoad(false);
+    } catch (err: any) {
+      console.log('handleRegister Error: ', err);
+      const error = err?.response?.data;
+      setError(error?.message);
+      setVerifyLoad(false);
+    }
+  };
+
+  const isAbleToVerify = isDetected && confidence > 50 && !isVerifyLoad;
+
+  return isLoading ? (
+    <FetchingDataLoader />
+  ) : (
     <VerifyWrapper>
       <VerifyContainer>
         <VerifyTitleContainer>
@@ -41,7 +123,6 @@ export const Verify = () => {
           </VerifyWarning>
         </VerifyTitleContainer>
         <VerifyText>
-          {' '}
           {isOldUser ? (
             <>
               Welcome: <span style={{ fontStyle: 'italic' }}>"Secret Identity"</span>{' '}
@@ -71,7 +152,10 @@ export const Verify = () => {
             />
           </FaceScanArea>
           <ErrorText sx={{ color: outline }}>{error !== '' && error}</ErrorText>
-          <VerifyButton>{isOldUser ? 'Log In' : 'Register'}</VerifyButton>
+          <VerifyButton onClick={handleVerify} disabled={!isAbleToVerify}>
+            {isVerifyLoad && <CircularProgress size={24} />}
+            {isOldUser ? 'Log In' : 'Register'}
+          </VerifyButton>
         </VerifyActionContainer>
       </VerifyContainer>
     </VerifyWrapper>
@@ -149,6 +233,9 @@ const VerifyButton = styled(Button)(({ theme }) => ({
   fontSize: '24px',
   height: '48px',
   width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  gap: '10px',
   marginTop: '20px',
   '&:hover': {
     backgroundColor: '#4532CE'

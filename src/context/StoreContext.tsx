@@ -2,8 +2,8 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import { localStorageGet, localStorageSet } from '../utils/localStorage';
 
 interface StoreContextProps {
-  page: number;
-  setPage: (value: number) => void;
+  isLoggedIn: boolean;
+  setLoggedIn: (value: boolean) => void;
 }
 
 interface propsType {
@@ -13,26 +13,17 @@ interface propsType {
 const StoreContext = createContext<StoreContextProps | null>(null);
 
 const StoreProvider = (props: propsType) => {
-  const [page, setPage] = useState<number>(localStorageGet('page'));
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(localStorageGet('isLoggedIn'));
 
-  const loadPage = () => {
-    setPage(localStorageGet('page') === '' ? 0 : localStorageGet('page'));
+  const setLogged = (flag: boolean) => {
+    setLoggedIn(flag);
+    localStorageSet('isLoggedIn', flag);
   };
-
-  const setPageNumber = (num: number) => {
-    setPage(num);
-    localStorageSet('page', num);
-  };
-
-  useEffect(() => {
-    loadPage();
-  }, []);
-
   return (
     <StoreContext.Provider
       value={{
-        page,
-        setPage: setPageNumber
+        isLoggedIn,
+        setLoggedIn: setLogged
       }}
     >
       {props.children}

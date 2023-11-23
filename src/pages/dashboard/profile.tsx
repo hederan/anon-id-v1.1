@@ -21,11 +21,11 @@ export const Profile = () => {
           </ProfileBannerImgContainer>
         </ProfileBanner>
         <ProfileAction>
-          <ActionButton bgColor="#4532CE">Exchange Points for Prizes (Coming Soon)</ActionButton>
-          <ActionButton bgColor="#4532CE">Exchange Points for Discounts with Partners (Coming Soon)</ActionButton>
-          <ActionButton bgColor="#4532CE">What do Levels do? (Coming Soon)</ActionButton>
-          <ActionButton bgColor="#7F00FF">LeaderBoard</ActionButton>
-          <ActionButton bgColor="#7F00FF">Sell Your Points!</ActionButton>
+          <ActionButton bgcolor="#4532CE">Exchange Points for Prizes (Coming Soon)</ActionButton>
+          <ActionButton bgcolor="#4532CE">Exchange Points for Discounts with Partners (Coming Soon)</ActionButton>
+          <ActionButton bgcolor="#4532CE">What do Levels do? (Coming Soon)</ActionButton>
+          <ActionButton bgcolor="#7F00FF">LeaderBoard</ActionButton>
+          <ActionButton bgcolor="#7F00FF">Sell Your Points!</ActionButton>
         </ProfileAction>
       </ProfileContainer>
     </ProfileWrapper>
@@ -108,11 +108,11 @@ const ProfileAction = styled(Box)(({ theme }) => ({
   width: '100%'
 }));
 
-const ActionButton = styled(Button)<{ bgColor: string }>(({ theme, bgColor }) => ({
+const ActionButton = styled(Button)<{ bgcolor: string }>(({ theme, bgcolor }) => ({
   borderRadius: '4px',
   color: '#FFF',
   width: '100%',
-  backgroundColor: bgColor,
+  backgroundColor: bgcolor,
   fontSize: '16px',
   textTransform: 'none',
   display: 'flex',
@@ -120,7 +120,7 @@ const ActionButton = styled(Button)<{ bgColor: string }>(({ theme, bgColor }) =>
   alignItems: 'center',
   minHeight: '68px',
   '&:hover': {
-    backgroundColor: bgColor
+    backgroundColor: bgcolor
   },
   [theme.breakpoints.down(480)]: {
     fontSize: '14px'

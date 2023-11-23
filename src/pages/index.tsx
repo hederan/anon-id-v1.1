@@ -107,17 +107,9 @@ const AnonIDLogoContainer = styled(Box)(({ theme }) => ({
 }));
 
 const AnonIdLogo = styled('img')(({ theme }) => ({
-  height: 'auto',
+  height: '40vh',
   objectFit: 'cover',
-  width: '720px',
-  [theme.breakpoints.down(640)]: {
-    width: '540px',
-    paddingTop: '50px'
-  },
-  [theme.breakpoints.down(390)]: {
-    width: '450px',
-    paddingTop: '100px'
-  }
+  width: 'auto'
 }));
 
 const SubTitle = styled('p')(({ theme }) => ({

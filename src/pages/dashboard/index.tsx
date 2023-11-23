@@ -15,24 +15,24 @@ export const Dashboard = () => {
           <DashboadBannerImg src={AnonIDPng} alt="dashboard-banner-img" />
         </DashboardBanner>
         <DashboardAction>
-          <ActionButton bgColor="#4532CE">Click here to “Sign in With Anon ID” ONLINE</ActionButton>
-          <ActionButton bgColor="#4532CE">
+          <ActionButton bgcolor="#4532CE">Click here to “Sign in With Anon ID” ONLINE</ActionButton>
+          <ActionButton bgcolor="#4532CE">
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
           </ActionButton>
-          <ActionButton bgColor="#4532CE">
+          <ActionButton bgcolor="#4532CE">
             Click here to Verify OTHER USER FACES are LIVE HUMANS and Earn Rewards (Alpha Stage)
           </ActionButton>
-          <ActionButton bgColor="#60B1E2">
+          <ActionButton bgcolor="#60B1E2">
             Conditional: If Images are available RECOVERY MATCHES (New Face MAtch) AVAILABLE EARN DOUBLE POINTS (maybe
             green if available red if not?)
           </ActionButton>
-          <ActionButton bgColor="#4532CE" onClick={() => navigate('/profile')}>
+          <ActionButton bgcolor="#4532CE" onClick={() => navigate('/profile')}>
             Click Here to See Points/Level/Rewards (Coming Soon)
           </ActionButton>
-          <ActionButton bgColor="#7F00FF">
+          <ActionButton bgcolor="#7F00FF">
             FUTURE FEATURE: Sign in while matching faces for a more secure authentication that yields rewards!
           </ActionButton>
-          <ActionButton bgColor="#7F00FF">
+          <ActionButton bgcolor="#7F00FF">
             Delete Account and Images (username can be claimed by someone else)
           </ActionButton>
         </DashboardAction>
@@ -97,11 +97,11 @@ const DashboardAction = styled(Box)(({ theme }) => ({
   paddingBottom: '50px'
 }));
 
-const ActionButton = styled(Button)<{ bgColor: string }>(({ theme, bgColor }) => ({
+const ActionButton = styled(Button)<{ bgcolor: string }>(({ theme, bgcolor }) => ({
   borderRadius: '4px',
   color: '#FFF',
   width: '100%',
-  backgroundColor: bgColor,
+  backgroundColor: bgcolor,
   fontSize: '16px',
   textTransform: 'none',
   display: 'flex',
@@ -109,7 +109,7 @@ const ActionButton = styled(Button)<{ bgColor: string }>(({ theme, bgColor }) =>
   alignItems: 'center',
   minHeight: '68px',
   '&:hover': {
-    backgroundColor: bgColor
+    backgroundColor: bgcolor
   },
   [theme.breakpoints.down(480)]: {
     fontSize: '14px'

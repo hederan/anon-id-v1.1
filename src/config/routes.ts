@@ -9,4 +9,6 @@ export const PUBLIC_ROUTES = {
   error404: '/error404'
 };
 
-export const PRIVATE_ROUTES = {};
+export const PRIVATE_ROUTES = {
+  server: 'http://192.168.131.165:5000'
+};

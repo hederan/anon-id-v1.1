@@ -1,8 +1,8 @@
 {
-  "name": "tigris-landing",
+  "name": "anonid",
   "version": "0.1.0",
   "author": {
-    "name": "Cool709"
+    "name": "jian"
   },
   "private": true,
   "dependencies": {
@@ -10,7 +10,6 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.10.16",
     "@mui/material": "^5.10.16",
-    "@rainbow-me/rainbowkit": "^0.8.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -19,11 +18,11 @@
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
     "@types/react-router-dom": "^5.3.3",
-    "axios": "^1.1.3",
+    "axios": "^1.6.2",
     "dotenv": "^16.0.3",
-    "ethers": "^5.7.2",
     "face-api.js": "^0.22.2",
-    "jwt-decode": "^3.1.2",
+    "jwt-decode": "^4.0.0",
+    "nft.storage": "^7.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0",
@@ -33,7 +32,6 @@
     "react-toastify": "9.0.3",
     "react-webcam": "^7.2.0",
     "typescript": "*",
-    "wagmi": "0.7.15",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
