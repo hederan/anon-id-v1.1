@@ -3,6 +3,7 @@ import { styled } from '@mui/system';
 import { AnonIDPng } from 'src/config/images';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'src/context/StoreContext';
+import { PRIVATE_ROUTES } from 'src/config/routes';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -17,7 +18,9 @@ export const Dashboard = () => {
           <DashboadBannerImg src={AnonIDPng} alt="dashboard-banner-img" />
         </DashboardBanner>
         <DashboardAction>
-          <ActionButton bgcolor="#4532CE">Click here to sign into “Site Y”</ActionButton>
+          <ActionButton bgcolor="#4532CE" onClick={() => window.open(PRIVATE_ROUTES.client)}>
+            Click here to sign into “Site Y”
+          </ActionButton>
           <ActionButton bgcolor="#4532CE">
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
           </ActionButton>
