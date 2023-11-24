@@ -63,8 +63,8 @@ export const Home = () => {
             anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
             transformOrigin={{ vertical: 'bottom', horizontal: 'left' }}
           >
-            Your Secret Identity (SID) Serves as your username, but do not share it with anyone. This is how you ID
-            yourself to log in but dont worry if you forget it, we can easily recover your account!
+            Your Secret Identity (SID) functions as your username, but please keep it confidential. It's used for
+            logging in, and in case you forget it, we have a straightforward account recovery process in place.
           </ExplainPopover>
         </HomeTextContainer>
         <HomeActionContainer>
