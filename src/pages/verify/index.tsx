@@ -9,10 +9,11 @@ import { PRIVATE_ROUTES } from 'src/config/routes';
 import { FetchingDataLoader } from 'src/components/AnonLoader/fechingDataLoader';
 import { localStorageSet } from 'src/utils/localStorage';
 import { useStore } from 'src/context/StoreContext';
+import { AnonRegisterLoader } from 'src/components/AnonLoader/registLoader';
 
 export const Verify = () => {
   const { username } = useParams();
-  const { isLoggedIn, setLoggedIn } = useStore();
+  const { setLoggedIn, setUser } = useStore();
   const [faceDescripter, setFaceDescripter] = useState(null);
   const [error, setError] = useState('');
   const [isCameraOpen, setCameraOpen] = useState(true);
@@ -24,6 +25,7 @@ export const Verify = () => {
   const [isOldUser, setOldUser] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isVerifyLoad, setVerifyLoad] = useState(false);
+  const [isRegisterLoad, setRegisterLoad] = useState(false);
 
   const turnOnCamera = () => {
     setCameraOpen(true);
@@ -68,6 +70,7 @@ export const Verify = () => {
       navigate('/dashboard');
       setLoggedIn(true);
       setVerifyLoad(false);
+      setUser(username ?? '');
     } catch (err: any) {
       console.log('handleLogin Error: ', err);
       const error = err?.response?.data;
@@ -78,7 +81,7 @@ export const Verify = () => {
 
   const handleRegister = async () => {
     try {
-      setVerifyLoad(true);
+      setRegisterLoad(true);
       const hash = await uploadFileToIPFS(screenshot);
       const res = await axios.post(`${PRIVATE_ROUTES.server}/auth/register`, {
         username,
@@ -89,13 +92,14 @@ export const Verify = () => {
       localStorageSet('token', token);
       setLoggedIn(true);
       console.log({ token });
-      navigate('/dashboard');
-      setVerifyLoad(false);
+      setUser(username ?? '');
+      setRegisterLoad(false);
+      navigate('/authenticated');
     } catch (err: any) {
       console.log('handleRegister Error: ', err);
       const error = err?.response?.data;
       setError(error?.message);
-      setVerifyLoad(false);
+      setRegisterLoad(false);
     }
   };
 
@@ -103,6 +107,8 @@ export const Verify = () => {
 
   return isLoading ? (
     <FetchingDataLoader />
+  ) : isRegisterLoad ? (
+    <AnonRegisterLoader />
   ) : (
     <VerifyWrapper>
       <VerifyContainer>

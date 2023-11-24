@@ -1,9 +1,11 @@
 import { Check } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
 import { styled } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 import { AnonIDPng } from 'src/config/images';
 
 export const Authenticated = () => {
+  const navigate = useNavigate();
   return (
     <AuthenticatedWrapper>
       <AuthenticatedContainer>
@@ -15,7 +17,9 @@ export const Authenticated = () => {
           </AuthenticatedIconContainer>
         </AuthenticatedNotify>
         <AuthenticatedAction>
-          <ActionButton bgcolor="#4532CE">Proceed to Home</ActionButton>
+          <ActionButton bgcolor="#4532CE" onClick={() => navigate('/dashboard')}>
+            Proceed to Home
+          </ActionButton>
           <ActionButton bgcolor="#FFCD29">
             <span style={{ color: '#000' }}>Click Here to Set Up Multi Face Recovery</span>
           </ActionButton>

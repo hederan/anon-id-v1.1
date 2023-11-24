@@ -2,15 +2,17 @@ import { Box, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { AnonIDPng } from 'src/config/images';
+import { useStore } from 'src/context/StoreContext';
 
 export const Profile = () => {
   const navigate = useNavigate();
+  const { user } = useStore();
   return (
     <ProfileWrapper>
       <ProfileContainer>
         <ProfileBanner>
           <ProfileReward>
-            <ProfileRewardText sx={{ fontWeight: '600', fontStyle: 'italic' }}>“Secret Identity”</ProfileRewardText>
+            <ProfileRewardText sx={{ fontWeight: '600', fontStyle: 'italic' }}>{user}</ProfileRewardText>
             <ProfileRewardText>Level:</ProfileRewardText>
             <ProfileRewardText>Points:</ProfileRewardText>
             <ProfileRewardText>Rank:</ProfileRewardText>

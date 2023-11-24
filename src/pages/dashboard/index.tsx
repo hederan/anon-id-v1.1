@@ -2,20 +2,22 @@ import { Box, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import { AnonIDPng } from 'src/config/images';
 import { useNavigate } from 'react-router-dom';
+import { useStore } from 'src/context/StoreContext';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
+  const { user } = useStore();
   return (
     <DashboardWrapper>
       <DashboardContainer>
         <DashboardBanner>
           <DashboardTitle>
-            Welcome: <span>"Secret Identity"</span>
+            Welcome: <span>{user}</span>
           </DashboardTitle>
           <DashboadBannerImg src={AnonIDPng} alt="dashboard-banner-img" />
         </DashboardBanner>
         <DashboardAction>
-          <ActionButton bgcolor="#4532CE">Click here to “Sign in With Anon ID” ONLINE</ActionButton>
+          <ActionButton bgcolor="#4532CE">Click here to sign into “Site Y”</ActionButton>
           <ActionButton bgcolor="#4532CE">
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
           </ActionButton>

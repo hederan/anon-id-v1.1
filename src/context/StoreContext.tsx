@@ -4,6 +4,8 @@ import { localStorageGet, localStorageSet } from '../utils/localStorage';
 interface StoreContextProps {
   isLoggedIn: boolean;
   setLoggedIn: (value: boolean) => void;
+  user: string;
+  setUser: (value: string) => void;
 }
 
 interface propsType {
@@ -14,16 +16,24 @@ const StoreContext = createContext<StoreContextProps | null>(null);
 
 const StoreProvider = (props: propsType) => {
   const [isLoggedIn, setLoggedIn] = useState<boolean>(localStorageGet('isLoggedIn'));
+  const [user, setUser] = useState<string>(localStorageGet('username'));
 
   const setLogged = (flag: boolean) => {
     setLoggedIn(flag);
     localStorageSet('isLoggedIn', flag);
   };
+
+  const setUserName = (user: string) => {
+    setUser(user);
+  };
+
   return (
     <StoreContext.Provider
       value={{
         isLoggedIn,
-        setLoggedIn: setLogged
+        setLoggedIn: setLogged,
+        user,
+        setUser: setUserName
       }}
     >
       {props.children}

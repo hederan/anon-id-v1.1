@@ -8,6 +8,7 @@ export const verifyToken = () => {
     const currentTime = Date.now() / 1000;
     if (decodedToken.exp && decodedToken.exp < currentTime) {
       localStorageDelete('token');
+      localStorageDelete('user');
       return false;
     }
     return true;

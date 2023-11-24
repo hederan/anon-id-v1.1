@@ -1,6 +1,7 @@
 import { Box, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import { AnonClock, AnonIDPng } from 'src/config/images';
+
 export const AnonRegisterLoader = () => {
   return (
     <AnonLoaderContainer>
