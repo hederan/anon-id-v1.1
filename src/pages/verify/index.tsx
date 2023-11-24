@@ -131,7 +131,7 @@ export const Verify = () => {
         <VerifyText>
           {isOldUser ? (
             <>
-              Welcome: <span style={{ fontStyle: 'italic' }}>"Secret Identity"</span>{' '}
+              Welcome: <span style={{ fontStyle: 'italic' }}>{username}</span>{' '}
               <p style={{ fontStyle: 'italic', fontWeight: '300' }}>Selfie to Log In</p>
             </>
           ) : (
