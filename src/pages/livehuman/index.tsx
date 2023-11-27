@@ -159,7 +159,10 @@ const LiveHumanItems = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '40px',
-  fontSize: '25px'
+  fontSize: '25px',
+  [theme.breakpoints.down(960)]: {
+    flexDirection: 'column'
+  }
 }));
 
 interface VotingImageProps {

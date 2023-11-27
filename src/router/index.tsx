@@ -36,8 +36,8 @@ export const Routers = () => {
           <Route path={PUBLIC_ROUTES.profile} element={<Profile />} />
           <Route path={PUBLIC_ROUTES.authenticated} element={<Authenticated />} />
           <Route path={PUBLIC_ROUTES.mfr} element={<MFR />} />
-          <Route path={'*'} element={<Dashboard />} />
           <Route path={PUBLIC_ROUTES.liveHuman} element={<LiveHuman />} />
+          <Route path={'*'} element={<Dashboard />} />
         </>
       )}
     </Routes>
