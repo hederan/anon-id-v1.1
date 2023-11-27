@@ -1,21 +1,43 @@
 import { Box, Button } from '@mui/material';
 import { styled } from '@mui/system';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnonIDPng } from 'src/config/images';
+import { PRIVATE_ROUTES } from 'src/config/routes';
 import { useStore } from 'src/context/StoreContext';
 
 export const Profile = () => {
   const navigate = useNavigate();
   const { user } = useStore();
+  const [level, setLevel] = useState(0);
+  const [points, setPoints] = useState(0);
+  const [rank, setRank] = useState(0);
+  const getUserData = () => {
+    axios
+      .post(`${PRIVATE_ROUTES.server}/user/userdata`, { username: user })
+      .then((res) => {
+        const field = res.data.data;
+        setPoints(field.point);
+        console.log({ field });
+      })
+      .catch((err) => {
+        console.log('get User Data Error: ', err);
+      });
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
   return (
     <ProfileWrapper>
       <ProfileContainer>
         <ProfileBanner>
           <ProfileReward>
             <ProfileRewardText sx={{ fontWeight: '600', fontStyle: 'italic' }}>{user}</ProfileRewardText>
-            <ProfileRewardText>Level:</ProfileRewardText>
-            <ProfileRewardText>Points:</ProfileRewardText>
-            <ProfileRewardText>Rank:</ProfileRewardText>
+            <ProfileRewardText>Level: {level}</ProfileRewardText>
+            <ProfileRewardText>Points: {points}</ProfileRewardText>
+            <ProfileRewardText>Rank: {rank}</ProfileRewardText>
           </ProfileReward>
           <ProfileBannerImgContainer>
             <ProfileBannerImg src={AnonIDPng} alt="profile-banner-img" />

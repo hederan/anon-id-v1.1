@@ -1,19 +1,42 @@
+import { useEffect, useState } from 'react';
 import { Box, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import { AnonIDPng } from 'src/config/images';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'src/context/StoreContext';
 import { PRIVATE_ROUTES } from 'src/config/routes';
+import axios from 'axios';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useStore();
+  const [isVotable, setVotable] = useState(false);
+
+  const getVotableStatus = () => {
+    if (user !== '') {
+      axios
+        .post(`${PRIVATE_ROUTES.server}/vote/isVotable`, { username: user })
+        .then((res) => {
+          const data = res.data;
+          const _isVotable = data.isVotable;
+          setVotable(_isVotable);
+        })
+        .catch((err) => {
+          console.log('get Votable Error: ', err);
+        });
+    }
+  };
+
+  useEffect(() => {
+    getVotableStatus();
+  }, []);
+
   return (
     <DashboardWrapper>
       <DashboardContainer>
         <DashboardBanner>
           <DashboardTitle>
-            Welcome: <span>{user}</span>
+            Welcome: <p>{user}</p>
           </DashboardTitle>
           <DashboadBannerImg src={AnonIDPng} alt="dashboard-banner-img" />
         </DashboardBanner>
@@ -24,7 +47,7 @@ export const Dashboard = () => {
           <ActionButton bgcolor="#4532CE">
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
           </ActionButton>
-          <ActionButton bgcolor="#4532CE">
+          <ActionButton bgcolor="#4532CE" disabled={!isVotable} onClick={() => navigate('/live-human')}>
             Click here to Verify OTHER USER FACES are LIVE HUMANS and Earn Rewards (Alpha Stage)
           </ActionButton>
           <ActionButton bgcolor="#60B1E2">
@@ -79,11 +102,18 @@ const DashboardTitle = styled(Box)(({ theme }) => ({
   fontSize: '40px',
   fontWeight: '600',
   color: '#FFF',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '8px',
+  width: '500px',
   span: {
     fontStyle: 'italic'
   },
   [theme.breakpoints.down(640)]: {
-    fontSize: '32px'
+    fontSize: '32px',
+    width: '300px',
+    flexDirection: 'column'
   },
   [theme.breakpoints.down(480)]: {
     fontSize: '26px'

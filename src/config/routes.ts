@@ -6,11 +6,12 @@ export const PUBLIC_ROUTES = {
   profile: '/profile',
   authenticated: '/authenticated',
   mfr: '/mfr',
+  liveHuman: '/live-human',
   error404: '/error404'
 };
 
 export const PRIVATE_ROUTES = {
-  // server: 'http://192.168.131.165:5000'
+  // server: 'http://192.168.131.165:5000',
   server: 'https://anon-id-v1-1-backend.vercel.app',
   client: 'https://test-anonid-client.vercel.app'
 };

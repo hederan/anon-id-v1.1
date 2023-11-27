@@ -9,6 +9,7 @@ import { verifyToken } from '../api/auth';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { PUBLIC_ROUTES } from 'src/config/routes';
 import { useStore } from 'src/context/StoreContext';
+import { LiveHuman } from 'src/pages/livehuman';
 
 export const Routers = () => {
   const { isLoggedIn, setLoggedIn } = useStore();
@@ -36,6 +37,7 @@ export const Routers = () => {
           <Route path={PUBLIC_ROUTES.authenticated} element={<Authenticated />} />
           <Route path={PUBLIC_ROUTES.mfr} element={<MFR />} />
           <Route path={'*'} element={<Dashboard />} />
+          <Route path={PUBLIC_ROUTES.liveHuman} element={<LiveHuman />} />
         </>
       )}
     </Routes>
