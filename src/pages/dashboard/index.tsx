@@ -10,26 +10,6 @@ import axios from 'axios';
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useStore();
-  const [isVotable, setVotable] = useState(false);
-
-  const getVotableStatus = () => {
-    if (user !== '') {
-      axios
-        .post(`${PRIVATE_ROUTES.server}/vote/isVotable`, { username: user })
-        .then((res) => {
-          const data = res.data;
-          const _isVotable = data.isVotable;
-          setVotable(_isVotable);
-        })
-        .catch((err) => {
-          console.log('get Votable Error: ', err);
-        });
-    }
-  };
-
-  useEffect(() => {
-    getVotableStatus();
-  }, []);
 
   return (
     <DashboardWrapper>
@@ -47,7 +27,7 @@ export const Dashboard = () => {
           <ActionButton bgcolor="#4532CE">
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
           </ActionButton>
-          <ActionButton bgcolor="#4532CE" disabled={!isVotable} onClick={() => navigate('/live-human')}>
+          <ActionButton bgcolor="#4532CE" onClick={() => navigate('/live-human')}>
             Click here to Verify OTHER USER FACES are LIVE HUMANS and Earn Rewards (Alpha Stage)
           </ActionButton>
           <ActionButton bgcolor="#60B1E2">

@@ -109,11 +109,13 @@ export const LiveHuman = () => {
           )}
         </LiveHumanItems>
         <LiveHumanAction>
-          <LiveHumanButton onClick={handleVotingClick} disabled={imageUrls.length === 0 || isLoading}>
+          <LiveHumanButton sx={{ backgroundColor: '' }} onClick={() => navigate('/dashboard')}>
+            Return Home
+          </LiveHumanButton>
+          <LiveHumanButton onClick={handleVotingClick} disabled={voteData.length === 0 || isLoading}>
             {isLoading && <CircularProgress size={24} sx={{ color: '#FFFFFF' }} />}
             Finish Voting
           </LiveHumanButton>
-          <LiveHumanButton onClick={() => navigate('/dashboard')}>Return Home</LiveHumanButton>
         </LiveHumanAction>
       </LiveHumanContainer>
     </LiveHumanWrapper>
@@ -156,9 +158,9 @@ const AnonIdLogo = styled('img')(({ theme }) => ({
 }));
 
 const LiveHumanItems = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '40px',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(3, 1fr)',
+  gap: '30px',
   fontSize: '25px',
   [theme.breakpoints.down(960)]: {
     flexDirection: 'column'
@@ -216,8 +218,9 @@ const CheckContainer = styled(Box)(({ theme }) => ({
 
 const LiveHumanAction = styled(Box)(({ theme }) => ({
   display: 'flex',
-  flexDirection: 'column',
-  gap: '20px'
+  alignItems: 'center',
+  gap: '20px',
+  padding: '50px 0'
 }));
 
 const LiveHumanButton = styled(Button)(({ theme, disabled }) => ({
