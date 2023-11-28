@@ -88,26 +88,24 @@ export const LiveHuman = () => {
         <AnonIDLogoContainer>
           <AnonIdLogo src={AnonIDPng} alt="anon-id" />
         </AnonIDLogoContainer>
-        <LiveHumanItems>
+        <LiveHumanItemContainer>
           {isImageLoading ? (
             <Loader />
+          ) : imageUrls.length === 0 ? (
+            <p>No Live Human Images</p>
           ) : (
-            <>
-              {imageUrls.length === 0 ? (
-                <p>No Live Human Images</p>
-              ) : (
-                imageUrls.map((imageUrl: string) => (
-                  <VotingImage
-                    key={imageUrl}
-                    imageUrl={imageUrl}
-                    isSelected={voteData.findIndex((data) => data.imageUrl === imageUrl) >= 0}
-                    onClick={() => handleImageClick(imageUrl)}
-                  />
-                ))
-              )}
-            </>
+            <LiveHumanItems>
+              {imageUrls.map((imageUrl: string) => (
+                <VotingImage
+                  key={imageUrl}
+                  imageUrl={imageUrl}
+                  isSelected={voteData.findIndex((data) => data.imageUrl === imageUrl) >= 0}
+                  onClick={() => handleImageClick(imageUrl)}
+                />
+              ))}
+            </LiveHumanItems>
           )}
-        </LiveHumanItems>
+        </LiveHumanItemContainer>
         <LiveHumanAction>
           <LiveHumanButton sx={{ backgroundColor: '' }} onClick={() => navigate('/dashboard')}>
             Return Home
@@ -157,13 +155,21 @@ const AnonIdLogo = styled('img')(({ theme }) => ({
   width: 'auto'
 }));
 
+const LiveHumanItemContainer = styled(Box)(({ theme }) => ({
+  fontSize: '25px'
+}));
+
 const LiveHumanItems = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
   gap: '30px',
-  fontSize: '25px',
+  justifyContent: 'center',
+  alignItems: 'center',
   [theme.breakpoints.down(960)]: {
-    flexDirection: 'column'
+    gridTemplateColumns: 'repeat(2, 1fr)'
+  },
+  [theme.breakpoints.down(480)]: {
+    gap: '20px'
   }
 }));
 
@@ -195,7 +201,15 @@ const VotingImageContainer = styled(Box)<{ selected: number }>(({ theme, selecte
   backgroundColor: '#ddd',
   cursor: 'pointer',
   border: `8px solid ${selected === 1 ? '#219653' : '#ddd'}`,
-  position: 'relative'
+  position: 'relative',
+  [theme.breakpoints.down(768)]: {
+    width: '200px',
+    height: '200px'
+  },
+  [theme.breakpoints.down(480)]: {
+    width: '160px',
+    height: '160px'
+  }
 }));
 
 const VoteImage = styled('img')(({ theme }) => ({
@@ -220,7 +234,10 @@ const LiveHumanAction = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '20px',
-  padding: '50px 0'
+  padding: '50px 0',
+  [theme.breakpoints.down(768)]: {
+    flexDirection: 'column-reverse'
+  }
 }));
 
 const LiveHumanButton = styled(Button)(({ theme, disabled }) => ({
