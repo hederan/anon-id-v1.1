@@ -2,11 +2,13 @@ export const PUBLIC_ROUTES = {
   default: '/',
   home: '/',
   verify: '/verify/:username',
+  recovery: '/recovery/:username',
   dashboard: '/dashboard',
   profile: '/profile',
   authenticated: '/authenticated',
   mfr: '/mfr',
   liveHuman: '/live-human',
+  match: '/match',
   error404: '/error404'
 };
 

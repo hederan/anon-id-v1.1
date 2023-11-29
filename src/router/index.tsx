@@ -9,16 +9,16 @@ import { verifyToken } from '../api/auth';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { PUBLIC_ROUTES } from 'src/config/routes';
 import { useStore } from 'src/context/StoreContext';
-import { LiveHuman } from 'src/pages/livehuman';
+import { LiveHuman } from 'src/pages/vote/livehuman';
+import { RecoverFace } from 'src/pages/verify/recover';
+import { MatchFace } from 'src/pages/vote/matchface';
 
 export const Routers = () => {
   const { isLoggedIn, setLoggedIn } = useStore();
-  const navigate = useNavigate();
   useEffect(() => {
     const isLogged = verifyToken();
     setLoggedIn(isLogged);
     if (!isLogged) {
-      navigate('/');
       setLoggedIn(false);
     }
   }, []);
@@ -28,6 +28,7 @@ export const Routers = () => {
         <>
           <Route path={PUBLIC_ROUTES.home} element={<Home />} />
           <Route path={PUBLIC_ROUTES.verify} element={<Verify />} />
+          <Route path={PUBLIC_ROUTES.recovery} element={<RecoverFace />} />
           <Route path={'*'} element={<Home />} />
         </>
       ) : (
@@ -37,6 +38,7 @@ export const Routers = () => {
           <Route path={PUBLIC_ROUTES.authenticated} element={<Authenticated />} />
           <Route path={PUBLIC_ROUTES.mfr} element={<MFR />} />
           <Route path={PUBLIC_ROUTES.liveHuman} element={<LiveHuman />} />
+          <Route path={PUBLIC_ROUTES.match} element={<MatchFace />} />
           <Route path={'*'} element={<Dashboard />} />
         </>
       )}

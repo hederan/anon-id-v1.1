@@ -6,10 +6,31 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from 'src/context/StoreContext';
 import { PRIVATE_ROUTES } from 'src/config/routes';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useStore();
+  const [isLimitVote, setLimitVote] = useState(false);
+
+  const getUserImageScore = async () => {
+    axios
+      .post(`${PRIVATE_ROUTES.server}/user/userData`, { username: user })
+      .then((res) => {
+        const data = res.data.field;
+        if (data && data.liveHuman.score <= -4) {
+          toast.error('Your face image is too bad. Please try to upload again');
+          setLimitVote(true);
+        }
+      })
+      .catch((err) => {
+        console.log('getUserImageScore Error: ', err);
+      });
+  };
+
+  useEffect(() => {
+    getUserImageScore();
+  }, []);
 
   return (
     <DashboardWrapper>
@@ -27,10 +48,10 @@ export const Dashboard = () => {
           <ActionButton bgcolor="#4532CE">
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
           </ActionButton>
-          <ActionButton bgcolor="#4532CE" onClick={() => navigate('/live-human')}>
+          <ActionButton bgcolor="#4532CE" disabled={isLimitVote} onClick={() => navigate('/live-human')}>
             Click here to Verify OTHER USER FACES are LIVE HUMANS and Earn Rewards (Alpha Stage)
           </ActionButton>
-          <ActionButton bgcolor="#60B1E2">
+          <ActionButton bgcolor="#60B1E2" onClick={() => navigate(`/match`)}>
             Conditional: If Images are available RECOVERY MATCHES (New Face MAtch) AVAILABLE EARN DOUBLE POINTS (maybe
             green if available red if not?)
           </ActionButton>

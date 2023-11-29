@@ -2,13 +2,14 @@ import { Box, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import { AnonClock, AnonIDPng } from 'src/config/images';
 
-export const AnonRegisterLoader = () => {
+export const AnonRegisterLoader = (props: { loaderText: string }) => {
+  const { loaderText } = props;
   return (
     <AnonLoaderContainer>
       <AnonIDLogoContainer>
         <AnonIdLogo src={AnonIDPng} alt="anon-id" />
       </AnonIDLogoContainer>
-      <div className="three-text-loader">Registering...</div>
+      <div className="three-text-loader">{loaderText}...</div>
       <AnonClockImg src={AnonClock} alt="anon-clock" />
     </AnonLoaderContainer>
   );

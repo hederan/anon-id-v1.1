@@ -26,6 +26,8 @@ export const Verify = () => {
   const [isLoading, setLoading] = useState(true);
   const [isVerifyLoad, setVerifyLoad] = useState(false);
   const [isRegisterLoad, setRegisterLoad] = useState(false);
+  const [errorStatus, setErrorStatus] = useState<number | null>(null);
+  const [isRecoverLoading, setRecoverLoading] = useState(true);
 
   const turnOnCamera = () => {
     setCameraOpen(true);
@@ -74,7 +76,10 @@ export const Verify = () => {
     } catch (err: any) {
       console.log('handleLogin Error: ', err);
       const error = err?.response?.data;
+      const status = error?.status;
+      setErrorStatus(status);
       setError(error?.message);
+      setOutline('#F00000');
       setVerifyLoad(false);
     }
   };
@@ -99,16 +104,39 @@ export const Verify = () => {
       console.log('handleRegister Error: ', err);
       const error = err?.response?.data;
       setError(error?.message);
+      setOutline('#F00000');
       setRegisterLoad(false);
     }
   };
 
   const isAbleToVerify = isDetected && confidence > 50 && !isVerifyLoad;
 
+  const getIsRecover = async () => {
+    try {
+      if (username == null) return;
+      const res = await axios.post(`${PRIVATE_ROUTES.server}/auth/isRecover`, { username: username });
+      const isRecover = res.data.data;
+      if (isRecover === true) {
+        setRecoverLoading(true);
+      } else {
+        setRecoverLoading(false);
+      }
+    } catch (err) {
+      console.log('Get IsRecover Error: ', err);
+      setRecoverLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getIsRecover();
+  }, []);
+
   return isLoading ? (
     <FetchingDataLoader />
   ) : isRegisterLoad ? (
-    <AnonRegisterLoader />
+    <AnonRegisterLoader loaderText="Registering" />
+  ) : isRecoverLoading ? (
+    <AnonRegisterLoader loaderText="Recovering" />
   ) : (
     <VerifyWrapper>
       <VerifyContainer>
@@ -158,10 +186,15 @@ export const Verify = () => {
             />
           </FaceScanArea>
           <ErrorText sx={{ color: outline }}>{error !== '' && error}</ErrorText>
-          <VerifyButton onClick={handleVerify} disabled={!isAbleToVerify}>
-            {isVerifyLoad && <CircularProgress size={24} />}
-            {isOldUser ? 'Log In' : 'Register'}
-          </VerifyButton>
+          <VerifyButtonContainer>
+            <VerifyButton onClick={handleVerify} disabled={!isAbleToVerify}>
+              {isVerifyLoad && <CircularProgress size={24} />}
+              {isOldUser ? 'Log In' : 'Register'}
+            </VerifyButton>
+            {errorStatus === 4 && (
+              <VerifyButton onClick={() => navigate(`/recovery/${username ?? ''}`)}>{'Recover Account'}</VerifyButton>
+            )}
+          </VerifyButtonContainer>
         </VerifyActionContainer>
       </VerifyContainer>
     </VerifyWrapper>
@@ -230,6 +263,14 @@ const FaceScanArea = styled(Box)(({ theme }) => ({
   position: 'relative'
 }));
 
+const VerifyButtonContainer = styled(Box)(({ theme }) => ({
+  marginTop: '20px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '10px',
+  width: '100%'
+}));
+
 const VerifyButton = styled(Button)(({ theme }) => ({
   borderRadius: '4px',
   backgroundColor: '#4532CE',
@@ -242,7 +283,6 @@ const VerifyButton = styled(Button)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: '10px',
-  marginTop: '20px',
   '&:hover': {
     backgroundColor: '#4532CE'
   }
