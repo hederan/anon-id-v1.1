@@ -4,6 +4,7 @@ import { styled } from '@mui/system';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { AnonRegisterLoader } from 'src/components/AnonLoader/registLoader';
 import { Camera } from 'src/components/FaceLiveness/camera';
 import { AnonIDPng } from 'src/config/images';
@@ -53,6 +54,9 @@ export const RecoverFace = () => {
     } catch (err: any) {
       console.log('sendRecoverFace', err);
       const error = err?.response?.data;
+      if (error) {
+        toast.error(error.message);
+      }
       setError(error?.message);
       setLoading(false);
     }
@@ -68,8 +72,12 @@ export const RecoverFace = () => {
       } else {
         setRecoverLoading(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log('Get IsRecover Error: ', err);
+      const error = err?.response?.data;
+      if (error) {
+        toast.error(error.message);
+      }
       setRecoverLoading(false);
     }
   };

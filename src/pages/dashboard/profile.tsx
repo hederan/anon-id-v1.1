@@ -3,6 +3,7 @@ import { styled } from '@mui/system';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { AnonIDPng } from 'src/config/images';
 import { PRIVATE_ROUTES } from 'src/config/routes';
 import { useStore } from 'src/context/StoreContext';
@@ -21,8 +22,12 @@ export const Profile = () => {
         setPoints(field.point);
         console.log({ field });
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.log('get User Data Error: ', err);
+        const error = err?.response?.data;
+        if (error) {
+          toast.error(error.message);
+        }
       });
   };
 

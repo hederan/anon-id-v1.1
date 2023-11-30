@@ -10,6 +10,7 @@ import { FetchingDataLoader } from 'src/components/AnonLoader/fechingDataLoader'
 import { localStorageSet } from 'src/utils/localStorage';
 import { useStore } from 'src/context/StoreContext';
 import { AnonRegisterLoader } from 'src/components/AnonLoader/registLoader';
+import { toast } from 'react-toastify';
 
 export const Verify = () => {
   const { username } = useParams();
@@ -48,8 +49,12 @@ export const Verify = () => {
       const isReturningUser = res.data.isReturningUser;
       setOldUser(isReturningUser);
       setLoading(false);
-    } catch (err) {
+    } catch (err: any) {
       console.log('getOldUser Error: ', err);
+      const error = err?.response?.data;
+      if (error) {
+        toast.error(error.message);
+      }
       setLoading(false);
     }
   };
@@ -76,6 +81,10 @@ export const Verify = () => {
     } catch (err: any) {
       console.log('handleLogin Error: ', err);
       const error = err?.response?.data;
+      if (error != null) {
+        console.log({ error });
+        toast.error(error.message);
+      }
       const status = error?.status;
       setErrorStatus(status);
       setError(error?.message);
@@ -103,6 +112,9 @@ export const Verify = () => {
     } catch (err: any) {
       console.log('handleRegister Error: ', err);
       const error = err?.response?.data;
+      if (error) {
+        toast.error(error.message);
+      }
       setError(error?.message);
       setOutline('#F00000');
       setRegisterLoad(false);
@@ -121,8 +133,12 @@ export const Verify = () => {
       } else {
         setRecoverLoading(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log('Get IsRecover Error: ', err);
+      const error = err?.response?.data;
+      if (error) {
+        toast.error(error.message);
+      }
       setRecoverLoading(false);
     }
   };

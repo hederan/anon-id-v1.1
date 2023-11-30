@@ -23,8 +23,12 @@ export const Dashboard = () => {
           setLimitVote(true);
         }
       })
-      .catch((err) => {
+      .catch((err: any) => {
         console.log('getUserImageScore Error: ', err);
+        const error = err?.response?.data;
+        if (error) {
+          toast.error(error.message);
+        }
       });
   };
 

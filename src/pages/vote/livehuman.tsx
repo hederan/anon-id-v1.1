@@ -8,6 +8,7 @@ import { useStore } from 'src/context/StoreContext';
 import { Loader } from 'src/components/AnonLoader';
 import axios from 'axios';
 import { PRIVATE_ROUTES } from 'src/config/routes';
+import { toast } from 'react-toastify';
 
 interface voteDataTypes {
   imageUrl: string;
@@ -38,8 +39,12 @@ export const LiveHuman = () => {
           setImageUrls(ipfsHashs as string[]);
           setImageLoading(false);
         })
-        .catch((err) => {
+        .catch((err: any) => {
           console.log('get Image Error: ', err);
+          const error = err?.response?.data;
+          if (error) {
+            toast.error(error.message);
+          }
           setImageLoading(false);
         });
     }
@@ -68,13 +73,16 @@ export const LiveHuman = () => {
       axios
         .post(`${PRIVATE_ROUTES.server}/vote/setLiveHuman`, { username: user, voteData: updateVoteData })
         .then((response) => {
-          const res = response.data;
           setLoading(false);
           navigate('/dashboard');
         });
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false);
       console.log('Voting Error: ', err);
+      const error = err?.response?.data;
+      if (error) {
+        toast.error(error.message);
+      }
     }
   };
 

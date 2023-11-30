@@ -8,6 +8,7 @@ import { PRIVATE_ROUTES } from 'src/config/routes';
 import { Loader } from 'src/components/AnonLoader';
 import { Check, Close } from '@mui/icons-material';
 import { useStore } from 'src/context/StoreContext';
+import { toast } from 'react-toastify';
 
 export const MatchFace = () => {
   const { user: username } = useStore();
@@ -19,24 +20,27 @@ export const MatchFace = () => {
   const [isLoader, setLoader] = useState(false);
   const navigate = useNavigate();
 
-  const getMatchFaceImages = () => {
+  const getMatchFaceImages = async () => {
     if (username == null) return;
-    axios
-      .post(`${PRIVATE_ROUTES.server}/vote/getRecoveryData`, { username: username })
-      .then((res) => {
-        const data = res.data;
-        setData(data);
-        if (data.length > 0) {
-          console.log({ data });
-          setOldImg(data[0].ipfsHash);
-          setNewImg(data[0].recover.ipfsHash);
-          setVoteUser(data[0].username);
-        }
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log('getMatchFaceImage Error: ', err);
-      });
+    try {
+      const res = await axios.post(`${PRIVATE_ROUTES.server}/vote/getRecoveryData`, { username: username });
+      const data = res.data;
+      setData(data);
+      if (data.length > 0) {
+        console.log({ data });
+        setOldImg(data[0].ipfsHash);
+        setNewImg(data[0].recover.ipfsHash);
+        setVoteUser(data[0].username);
+      }
+      setLoading(false);
+    } catch (err: any) {
+      console.log('getMatchFaceImage Error: ', err);
+      const error = err?.response?.data;
+      if (error) {
+        toast.error(error.message);
+      }
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -53,9 +57,13 @@ export const MatchFace = () => {
           navigate(`/dashboard`);
         }
       });
-    } catch (err) {
+    } catch (err: any) {
       setLoader(false);
       console.log('Set Match Image error: ', err);
+      const error = err?.response?.data;
+      if (error) {
+        toast.error(error.message);
+      }
     }
   };
 
