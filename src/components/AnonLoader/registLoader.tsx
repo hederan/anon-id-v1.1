@@ -10,6 +10,9 @@ export const AnonRegisterLoader = (props: { loaderText: string }) => {
         <AnonIdLogo src={AnonIDPng} alt="anon-id" />
       </AnonIDLogoContainer>
       <div className="three-text-loader">{loaderText}...</div>
+      {loaderText === 'Recovering' && (
+        <Notification>please wait while our network verified your check back again</Notification>
+      )}
       <AnonClockImg src={AnonClock} alt="anon-clock" />
     </AnonLoaderContainer>
   );
@@ -50,4 +53,9 @@ const AnonClockImg = styled('img')(({ theme }) => ({
     width: '320px',
     height: '320px'
   }
+}));
+
+const Notification = styled(Box)(({ theme }) => ({
+  fontSize: '24px',
+  color: '#FFF'
 }));

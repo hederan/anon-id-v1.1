@@ -21,7 +21,7 @@ export const RecoverFace = () => {
   const [screenshot, setScreenshot] = useState(null);
   const [isOldUser, setOldUser] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [isRecoverLoading, setRecoverLoading] = useState(true);
+  const [isRecoverLoading, setRecoverLoading] = useState(false);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
 
   const turnOnCamera = () => {
@@ -57,6 +57,26 @@ export const RecoverFace = () => {
       setLoading(false);
     }
   };
+
+  const getIsRecover = async () => {
+    try {
+      if (username == null) return;
+      const res = await axios.post(`${PRIVATE_ROUTES.server}/auth/isRecover`, { username: username });
+      const isRecover = res.data.data;
+      if (isRecover === true) {
+        setRecoverLoading(true);
+      } else {
+        setRecoverLoading(false);
+      }
+    } catch (err) {
+      console.log('Get IsRecover Error: ', err);
+      setRecoverLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getIsRecover();
+  }, []);
 
   const isAbleToVerify = isDetected && confidence > 50 && !isLoading;
   console.log({ isAbleToVerify, isDetected, confidence, isLoading });
