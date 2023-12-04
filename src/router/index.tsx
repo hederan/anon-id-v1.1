@@ -13,6 +13,7 @@ import { LiveHuman } from 'src/pages/vote/livehuman';
 import { RecoverFace } from 'src/pages/verify/recover';
 import { MatchFace } from 'src/pages/vote/matchface';
 import { Authorize } from 'src/pages/verify/authorize';
+import { PreHome } from 'src/pages/dashboard/prehome';
 
 export const Routers = () => {
   const { isLoggedIn, setLoggedIn } = useStore();
@@ -33,12 +34,13 @@ export const Routers = () => {
       ) : (
         <>
           <Route path={PUBLIC_ROUTES.dashboard} element={<Dashboard />} />
+          <Route path={PUBLIC_ROUTES.prehome} element={<PreHome />} />
           <Route path={PUBLIC_ROUTES.profile} element={<Profile />} />
           <Route path={PUBLIC_ROUTES.authenticated} element={<Authenticated />} />
           <Route path={PUBLIC_ROUTES.mfr} element={<MFR />} />
           <Route path={PUBLIC_ROUTES.liveHuman} element={<LiveHuman />} />
           <Route path={PUBLIC_ROUTES.match} element={<MatchFace />} />
-          <Route path={'*'} element={<Dashboard />} />
+          <Route path={'*'} element={<PreHome />} />
         </>
       )}
     </Routes>

@@ -5,6 +5,7 @@ export const PUBLIC_ROUTES = {
   authorize: '/authorize',
   recovery: '/recovery/:username',
   dashboard: '/dashboard',
+  prehome: '/prehome',
   profile: '/profile',
   authenticated: '/authenticated',
   mfr: '/mfr',

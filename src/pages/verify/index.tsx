@@ -74,7 +74,7 @@ export const Verify = () => {
       const token = res.data.token;
       console.log({ token });
       localStorageSet('token', token);
-      navigate('/dashboard');
+      navigate('/prehome');
       setLoggedIn(true);
       setVerifyLoad(false);
       setUser(username ?? '');

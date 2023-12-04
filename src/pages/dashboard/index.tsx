@@ -9,6 +9,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { localStorageGet } from 'src/utils/localStorage';
 import { verifyToken } from 'src/api/auth';
+import { clientName } from 'src/config/config';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ export const Dashboard = () => {
         </DashboardBanner>
         <DashboardAction>
           <ActionButton bgcolor="#4532CE" onClick={returnBackToClient}>
-            Click here to sign into “Site Y”
+            Click here to sign into “{clientName}”
           </ActionButton>
           <ActionButton bgcolor="#4532CE">
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
@@ -149,7 +150,8 @@ const DashboardAction = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '15px',
-  paddingBottom: '50px'
+  paddingBottom: '50px',
+  width: '100%'
 }));
 
 const ActionButton = styled(Button)<{ bgcolor: string }>(({ theme, bgcolor }) => ({
