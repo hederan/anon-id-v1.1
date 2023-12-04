@@ -6,21 +6,19 @@ import { Profile } from '../pages/dashboard/profile';
 import { Authenticated } from '../pages/authenticated';
 import { MFR } from '../pages/MFR';
 import { verifyToken } from '../api/auth';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { PUBLIC_ROUTES } from 'src/config/routes';
 import { useStore } from 'src/context/StoreContext';
 import { LiveHuman } from 'src/pages/vote/livehuman';
 import { RecoverFace } from 'src/pages/verify/recover';
 import { MatchFace } from 'src/pages/vote/matchface';
+import { Authorize } from 'src/pages/verify/authorize';
 
 export const Routers = () => {
   const { isLoggedIn, setLoggedIn } = useStore();
   useEffect(() => {
     const isLogged = verifyToken();
     setLoggedIn(isLogged);
-    if (!isLogged) {
-      setLoggedIn(false);
-    }
   }, []);
   return (
     <Routes>
@@ -29,6 +27,7 @@ export const Routers = () => {
           <Route path={PUBLIC_ROUTES.home} element={<Home />} />
           <Route path={PUBLIC_ROUTES.verify} element={<Verify />} />
           <Route path={PUBLIC_ROUTES.recovery} element={<RecoverFace />} />
+          <Route path={PUBLIC_ROUTES.authorize} element={<Authorize />} />
           <Route path={'*'} element={<Home />} />
         </>
       ) : (

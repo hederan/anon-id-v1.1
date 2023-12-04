@@ -25,6 +25,7 @@ const StoreProvider = (props: propsType) => {
 
   const setUserName = (user: string) => {
     setUser(user);
+    localStorageSet('username', user);
   };
 
   return (

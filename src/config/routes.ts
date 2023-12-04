@@ -2,6 +2,7 @@ export const PUBLIC_ROUTES = {
   default: '/',
   home: '/',
   verify: '/verify/:username',
+  authorize: '/authorize',
   recovery: '/recovery/:username',
   dashboard: '/dashboard',
   profile: '/profile',
@@ -14,6 +15,5 @@ export const PUBLIC_ROUTES = {
 
 export const PRIVATE_ROUTES = {
   // server: 'http://192.168.131.165:5000',
-  server: 'https://anon-id-v1-1-backend.vercel.app',
-  client: 'https://test-anonid-client.vercel.app'
+  server: 'https://anon-id-v1-1-backend.vercel.app'
 };

@@ -7,6 +7,8 @@ import { useStore } from 'src/context/StoreContext';
 import { PRIVATE_ROUTES } from 'src/config/routes';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { localStorageGet } from 'src/utils/localStorage';
+import { verifyToken } from 'src/api/auth';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -36,6 +38,19 @@ export const Dashboard = () => {
     getUserImageScore();
   }, []);
 
+  const returnBackToClient = () => {
+    const clientUri = localStorageGet('redirectUri') as string;
+    if (clientUri == null || clientUri === '') {
+      toast.error("Can't find client uri");
+      return;
+    }
+    const token = localStorageGet('token') as string;
+    const isValidToken = verifyToken();
+    if (isValidToken) {
+      window.location.href = `${clientUri}/${token}`;
+    }
+  };
+
   return (
     <DashboardWrapper>
       <DashboardContainer>
@@ -46,7 +61,7 @@ export const Dashboard = () => {
           <DashboadBannerImg src={AnonIDPng} alt="dashboard-banner-img" />
         </DashboardBanner>
         <DashboardAction>
-          <ActionButton bgcolor="#4532CE" onClick={() => window.open(PRIVATE_ROUTES.client)}>
+          <ActionButton bgcolor="#4532CE" onClick={returnBackToClient}>
             Click here to sign into “Site Y”
           </ActionButton>
           <ActionButton bgcolor="#4532CE">
