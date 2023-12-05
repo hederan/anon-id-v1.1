@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
-import { AnonIDPng } from 'src/config/images';
+import { AnonIDPng, ManJpg } from 'src/config/images';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { PRIVATE_ROUTES } from 'src/config/routes';
@@ -174,7 +174,28 @@ const MatchFaceItemTitle = styled(Box)(({ theme }) => ({
   color: '#fff'
 }));
 
-const MatchFaceImg = styled('img')(({ theme }) => ({
+interface MatchFaceImgProps {
+  src: string;
+  alt: string;
+}
+
+const MatchFaceImg = (props: MatchFaceImgProps) => {
+  const { src, alt } = props;
+  const [isLoad, setLoad] = useState(false);
+  return (
+    <>
+      <MatchFaceImgContainer
+        src={src}
+        sx={{ display: !isLoad ? 'none' : 'block' }}
+        alt={alt}
+        onLoad={() => setLoad(true)}
+      />
+      {!isLoad && <MatchFaceImgContainer src={ManJpg} alt={'default-img'} />}
+    </>
+  );
+};
+
+const MatchFaceImgContainer = styled('img')(({ theme }) => ({
   width: '250px',
   height: '250px',
   borderRadius: '50%'

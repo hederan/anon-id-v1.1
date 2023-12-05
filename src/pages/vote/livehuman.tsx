@@ -3,7 +3,7 @@ import { Check } from '@mui/icons-material';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
-import { AnonIDPng } from 'src/config/images';
+import { AnonIDPng, ManJpg } from 'src/config/images';
 import { useStore } from 'src/context/StoreContext';
 import { Loader } from 'src/components/AnonLoader';
 import axios from 'axios';
@@ -190,9 +190,16 @@ interface VotingImageProps {
 const VotingImage = (props: VotingImageProps) => {
   const { imageUrl, isSelected, onClick } = props;
   console.log({ VotingImage: imageUrl });
+  const [isLoad, setLoad] = useState(false);
   return (
     <VotingImageContainer selected={isSelected ? 1 : 0} onClick={onClick}>
-      <VoteImage src={`https://gateway.pinata.cloud/ipfs/${imageUrl}`} alt="face-image" />
+      <VoteImage
+        sx={{ display: isLoad ? 'block' : 'none' }}
+        src={`https://gateway.pinata.cloud/ipfs/${imageUrl}`}
+        onLoad={() => setLoad(true)}
+        alt="face-image"
+      />
+      {!isLoad && <VoteImage src={ManJpg} alt="default-image" />}
       {isSelected && (
         <CheckContainer>
           <Check sx={{ color: '#219653', fontSize: 80 }} />
