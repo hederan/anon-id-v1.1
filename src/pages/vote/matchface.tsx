@@ -112,11 +112,9 @@ export const MatchFace = () => {
           Vote
         </MatchButton>
       </MatchButtonContainer>
-      {data.length === 0 && (
-        <Button color="info" name="Return Home" onClick={() => navigate('/dashboard')} variant="contained">
-          Return Home
-        </Button>
-      )}
+      <Button color="info" name="Return Home" onClick={() => navigate('/dashboard')} variant="contained">
+        Return Home
+      </Button>
     </MatchFaceWrapper>
   );
 };
@@ -159,7 +157,13 @@ const AnonIdLogo = styled('img')(({ theme }) => ({
 const MatchFaceItemContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  gap: '100px'
+  gap: '100px',
+  [theme.breakpoints.down(768)]: {
+    gap: '50px'
+  },
+  [theme.breakpoints.down(640)]: {
+    flexDirection: 'column'
+  }
 }));
 
 const MatchFaceItem = styled(Box)(({ theme }) => ({

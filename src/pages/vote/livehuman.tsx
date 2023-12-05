@@ -118,7 +118,7 @@ export const LiveHuman = () => {
           <LiveHumanButton sx={{ backgroundColor: '' }} onClick={() => navigate('/dashboard')}>
             Return Home
           </LiveHumanButton>
-          <LiveHumanButton onClick={handleVotingClick} disabled={voteData.length === 0 || isLoading}>
+          <LiveHumanButton onClick={handleVotingClick} disabled={isLoading}>
             {isLoading && <CircularProgress size={24} sx={{ color: '#FFFFFF' }} />}
             Finish Voting
           </LiveHumanButton>
