@@ -17,7 +17,7 @@ export const Authenticated = () => {
           </AuthenticatedIconContainer>
         </AuthenticatedNotify>
         <AuthenticatedAction>
-          <ActionButton bgcolor="#4532CE" onClick={() => navigate('/dashboard')}>
+          <ActionButton bgcolor="#4532CE" onClick={() => navigate('/prehome')}>
             Proceed to Home
           </ActionButton>
           <ActionButton bgcolor="#FFCD29">
