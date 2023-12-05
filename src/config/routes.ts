@@ -15,6 +15,6 @@ export const PUBLIC_ROUTES = {
 };
 
 export const PRIVATE_ROUTES = {
-  // server: 'http://192.168.131.165:5000',
+  // server: 'http://192.168.131.165:5000'
   server: 'https://anon-id-v1-1-backend.vercel.app'
 };

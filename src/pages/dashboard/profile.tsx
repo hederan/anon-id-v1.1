@@ -20,6 +20,7 @@ export const Profile = () => {
       .then((res) => {
         const field = res.data.data;
         setPoints(field.point);
+        setLevel(field.level);
         console.log({ field });
       })
       .catch((err: any) => {
