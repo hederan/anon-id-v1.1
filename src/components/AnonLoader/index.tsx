@@ -1,10 +1,11 @@
 import { Box, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
 
-export const Loader = () => {
+export const Loader = (props: { size?: number }) => {
+  const { size } = props;
   return (
     <LoaderContainer>
-      <CircularProgress size={180} sx={{ color: '#3772FF' }} />
+      <CircularProgress size={size ?? 180} sx={{ color: '#3772FF' }} />
     </LoaderContainer>
   );
 };

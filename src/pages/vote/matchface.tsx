@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { styled } from '@mui/system';
-import { AnonIDPng, ManJpg } from 'src/config/images';
-import { useNavigate, useParams } from 'react-router-dom';
+import { AnonIDPng, ImgLoadPng } from 'src/config/images';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PRIVATE_ROUTES } from 'src/config/routes';
 import { Loader } from 'src/components/AnonLoader';
@@ -188,13 +188,13 @@ const MatchFaceImg = (props: MatchFaceImgProps) => {
   const [isLoad, setLoad] = useState(false);
   return (
     <>
+      {!isLoad && <MatchFaceImgContainer src={ImgLoadPng} alt={'default-img'} />}
       <MatchFaceImgContainer
         src={src}
         sx={{ display: !isLoad ? 'none' : 'block' }}
         alt={alt}
         onLoad={() => setLoad(true)}
       />
-      {!isLoad && <MatchFaceImgContainer src={ManJpg} alt={'default-img'} />}
     </>
   );
 };
