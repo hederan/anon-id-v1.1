@@ -20,8 +20,8 @@ export const Dashboard = () => {
     axios
       .post(`${PRIVATE_ROUTES.server}/user/userData`, { username: user })
       .then((res) => {
-        const data = res.data.field;
-        if (data && data.liveHuman.score <= -4) {
+        const data = res.data.data;
+        if (data && data.isHuman === false) {
           toast.error('Your face image is too bad. Please try to upload again');
           setLimitVote(true);
         }
@@ -62,23 +62,28 @@ export const Dashboard = () => {
           <DashboadBannerImg src={AnonIDPng} alt="dashboard-banner-img" />
         </DashboardBanner>
         <DashboardAction>
+          {isLimitVote && (
+            <ActionButton bgcolor="#4532CE" onClick={() => navigate('/re-register')}>
+              Re-Register Your Face
+            </ActionButton>
+          )}
           <ActionButton bgcolor="#4532CE" onClick={returnBackToClient}>
             Click here to sign into “{clientName}”
           </ActionButton>
-          <ActionButton bgcolor="#4532CE">
+          <ActionButton bgcolor="#4532CE" disabled={isLimitVote}>
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
           </ActionButton>
           <ActionButton bgcolor="#4532CE" disabled={isLimitVote} onClick={() => navigate('/live-human')}>
             Click here to Verify OTHER USER FACES are LIVE HUMANS and Earn Rewards (Alpha Stage)
           </ActionButton>
-          <ActionButton bgcolor="#60B1E2" onClick={() => navigate(`/match`)}>
+          <ActionButton bgcolor="#60B1E2" disabled={isLimitVote} onClick={() => navigate(`/match`)}>
             Conditional: If Images are available RECOVERY MATCHES (New Face MAtch) AVAILABLE EARN DOUBLE POINTS (maybe
             green if available red if not?)
           </ActionButton>
           <ActionButton bgcolor="#4532CE" onClick={() => navigate('/profile')}>
             Click Here to See Points/Level/Rewards (Coming Soon)
           </ActionButton>
-          <ActionButton bgcolor="#7F00FF">
+          <ActionButton bgcolor="#7F00FF" disabled={isLimitVote}>
             FUTURE FEATURE: Sign in while matching faces for a more secure authentication that yields rewards!
           </ActionButton>
           <ActionButton bgcolor="#7F00FF">

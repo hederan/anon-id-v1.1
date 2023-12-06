@@ -1,16 +1,46 @@
 import { Box, Button } from '@mui/material';
 import { styled } from '@mui/system';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { verifyToken } from 'src/api/auth';
 import { clientName } from 'src/config/config';
 import { AnonIDPng } from 'src/config/images';
+import { PRIVATE_ROUTES } from 'src/config/routes';
 import { useStore } from 'src/context/StoreContext';
 import { localStorageGet } from 'src/utils/localStorage';
+import { useState, useEffect } from 'react';
 
 export const PreHome = () => {
   const { user } = useStore();
   const navigate = useNavigate();
+
+  const [isLimitVote, setLimitVote] = useState(false);
+
+  const getUserImageScore = async () => {
+    axios
+      .post(`${PRIVATE_ROUTES.server}/user/userData`, { username: user })
+      .then((res) => {
+        const data = res.data.data;
+        console.log({ res });
+        if (data && data.isHuman === false) {
+          toast.error('Your face image is too bad. Please try to upload again');
+          setLimitVote(true);
+        }
+      })
+      .catch((err: any) => {
+        console.log('getUserImageScore Error: ', err);
+        const error = err?.response?.data;
+        if (error) {
+          toast.error(error.message);
+        }
+      });
+  };
+
+  useEffect(() => {
+    getUserImageScore();
+  }, []);
+
   const returnBackToClient = () => {
     const clientUri = localStorageGet('redirectUri') as string;
     const token = localStorageGet('token') as string;
@@ -41,6 +71,11 @@ export const PreHome = () => {
           <ActionButton bgcolor="#4532CE" onClick={returnBackToClient}>
             Click here to sign into “{clientName}”
           </ActionButton>
+          {isLimitVote && (
+            <ActionButton bgcolor="#4532CE" onClick={() => navigate('/re-register')}>
+              Re-Register Your Face
+            </ActionButton>
+          )}
           <ActionButton bgcolor="#4532CE" onClick={() => navigate('/dashboard')}>
             Click here to earn CASH matching faces!
           </ActionButton>

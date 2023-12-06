@@ -11,6 +11,7 @@ export const PUBLIC_ROUTES = {
   mfr: '/mfr',
   liveHuman: '/live-human',
   match: '/match',
+  reregister: '/re-register',
   error404: '/error404'
 };
 

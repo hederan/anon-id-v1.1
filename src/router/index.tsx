@@ -14,6 +14,7 @@ import { RecoverFace } from 'src/pages/verify/recover';
 import { MatchFace } from 'src/pages/vote/matchface';
 import { Authorize } from 'src/pages/verify/authorize';
 import { PreHome } from 'src/pages/dashboard/prehome';
+import { ReRegister } from 'src/pages/verify/reregister';
 
 export const Routers = () => {
   const { isLoggedIn, setLoggedIn } = useStore();
@@ -40,6 +41,7 @@ export const Routers = () => {
           <Route path={PUBLIC_ROUTES.mfr} element={<MFR />} />
           <Route path={PUBLIC_ROUTES.liveHuman} element={<LiveHuman />} />
           <Route path={PUBLIC_ROUTES.match} element={<MatchFace />} />
+          <Route path={PUBLIC_ROUTES.reregister} element={<ReRegister />} />
           <Route path={'*'} element={<PreHome />} />
         </>
       )}
