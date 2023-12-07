@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { Box, Button, Popover } from '@mui/material';
 import { styled } from '@mui/system';
 import { AnonIDPng } from 'src/config/images';
 import { useNavigate } from 'react-router-dom';
@@ -10,24 +10,29 @@ import { toast } from 'react-toastify';
 import { localStorageGet } from 'src/utils/localStorage';
 import { verifyToken } from 'src/api/auth';
 import { clientName } from 'src/config/config';
+import { VerifiedUser } from '@mui/icons-material';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const { user } = useStore();
   const [isLimitVote, setLimitVote] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const [liveHumanScore, setLiveHumanScore] = useState(0);
 
-  const getUserImageScore = async () => {
+  const getUserData = async () => {
     axios
       .post(`${PRIVATE_ROUTES.server}/user/userData`, { username: user })
       .then((res) => {
         const data = res.data.data;
+        console.log({ res });
         if (data && data.isHuman === false) {
           toast.error('Your face image is too bad. Please try to upload again');
           setLimitVote(true);
+          setLiveHumanScore(data.liveHuman.score);
         }
       })
       .catch((err: any) => {
-        console.log('getUserImageScore Error: ', err);
+        console.log('getUserData Error: ', err);
         const error = err?.response?.data;
         if (error) {
           toast.error(error.message);
@@ -36,7 +41,7 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
-    getUserImageScore();
+    getUserData();
   }, []);
 
   const returnBackToClient = () => {
@@ -52,6 +57,17 @@ export const Dashboard = () => {
     }
   };
 
+  const isOpen = Boolean(anchorEl);
+  const id = isOpen ? 'simple-popover' : undefined;
+
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <DashboardWrapper>
       <DashboardContainer>
@@ -60,6 +76,24 @@ export const Dashboard = () => {
             Welcome: <p>{user}</p>
           </DashboardTitle>
           <DashboadBannerImg src={AnonIDPng} alt="dashboard-banner-img" />
+          {liveHumanScore >= 4 && (
+            <>
+              <VerifiedUserContainer onClick={handleClick}>
+                <VerifiedUser sx={{ width: '100%', height: '100%', color: '#23A55A' }} />
+              </VerifiedUserContainer>
+              <ExplainPopover
+                id={id}
+                open={isOpen}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+              >
+                Congratulations you have been fully verified by Anon ID network! Your pictures have been deleted from
+                any human view!
+              </ExplainPopover>
+            </>
+          )}
         </DashboardBanner>
         <DashboardAction>
           {isLimitVote && (
@@ -74,11 +108,10 @@ export const Dashboard = () => {
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
           </ActionButton> */}
           <ActionButton bgcolor="#4532CE" disabled={isLimitVote} onClick={() => navigate('/live-human')}>
-            Click here to Verify OTHER USER FACES are LIVE HUMANS and Earn Rewards (Alpha Stage)
+            Click here to Earn Rewards by choosing Live faces (Alpha Stage)
           </ActionButton>
           <ActionButton bgcolor="#60B1E2" disabled={isLimitVote} onClick={() => navigate(`/match`)}>
-            Conditional: If Images are available RECOVERY MATCHES (New Face MAtch) AVAILABLE EARN DOUBLE POINTS (maybe
-            green if available red if not?)
+            Click here to earn double rewards by confirming account recovery pictures match.
           </ActionButton>
           <ActionButton bgcolor="#4532CE" onClick={() => navigate('/profile')}>
             Click Here to See Points/Level/Rewards (Coming Soon)
@@ -175,5 +208,26 @@ const ActionButton = styled(Button)<{ bgcolor: string }>(({ theme, bgcolor }) =>
   },
   [theme.breakpoints.down(480)]: {
     fontSize: '14px'
+  }
+}));
+
+const VerifiedUserContainer = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  width: '100px',
+  height: '100px',
+  right: '0',
+  top: '100px',
+  [theme.breakpoints.down(640)]: {
+    width: '50px',
+    height: '50px'
+  }
+}));
+
+const ExplainPopover = styled(Popover)(({ theme }) => ({
+  '& .MuiPopover-paper': {
+    backgroundColor: '#80CAFF',
+    color: '#000',
+    width: '320px',
+    padding: '16px'
   }
 }));
