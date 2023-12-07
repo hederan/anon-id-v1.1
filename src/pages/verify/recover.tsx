@@ -1,5 +1,5 @@
 /* eslint-disable  @typescript-eslint/no-misused-promises */
-import { Box, Button } from '@mui/material';
+import { Box, Button, FormControlLabel, Switch } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -24,6 +24,7 @@ export const RecoverFace = () => {
   const [isLoading, setLoading] = useState(false);
   const [isRecoverLoading, setRecoverLoading] = useState(false);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
+  const [isBright, setBright] = useState(false);
 
   const turnOnCamera = () => {
     setCameraOpen(true);
@@ -86,6 +87,10 @@ export const RecoverFace = () => {
     getIsRecover();
   }, []);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBright(event.target.checked);
+  };
+
   const isAbleToVerify = isDetected && confidence > 50 && !isLoading;
   console.log({ isAbleToVerify, isDetected, confidence, isLoading });
 
@@ -113,9 +118,14 @@ export const RecoverFace = () => {
               setScreenshot={setScreenshot}
               confidence={confidence}
               setConfidence={setConfidence}
+              isBright={isBright}
             />
           </FaceScanArea>
           <ErrorText sx={{ color: outline }}>{error !== '' && error}</ErrorText>
+          <FormControlLabel
+            control={<Switch color="warning" checked={isBright} onChange={handleChange} />}
+            label="Turn on the light"
+          />
           <RecoverButton disabled={!isAbleToVerify} onClick={sendRecoverFace}>
             Recover with Selfie
           </RecoverButton>

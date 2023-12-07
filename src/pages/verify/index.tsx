@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress } from '@mui/material';
+import { Box, Button, CircularProgress, FormControlLabel, Switch } from '@mui/material';
 import { styled } from '@mui/system';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -29,6 +29,7 @@ export const Verify = () => {
   const [isRegisterLoad, setRegisterLoad] = useState(false);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
   const [isRecoverLoading, setRecoverLoading] = useState(true);
+  const [isBright, setBright] = useState(false);
 
   const turnOnCamera = () => {
     setCameraOpen(true);
@@ -147,6 +148,10 @@ export const Verify = () => {
     getIsRecover();
   }, []);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBright(event.target.checked);
+  };
+
   return isLoading ? (
     <FetchingDataLoader />
   ) : isRegisterLoad ? (
@@ -199,10 +204,15 @@ export const Verify = () => {
               setScreenshot={setScreenshot}
               confidence={confidence}
               setConfidence={setConfidence}
+              isBright={isBright}
             />
           </FaceScanArea>
           <ErrorText sx={{ color: outline }}>{error !== '' && error}</ErrorText>
           <VerifyButtonContainer>
+            <FormControlLabel
+              control={<Switch color="warning" checked={isBright} onChange={handleChange} />}
+              label="Turn on the light"
+            />
             <VerifyButton onClick={handleVerify} disabled={!isAbleToVerify}>
               {isVerifyLoad && <CircularProgress size={24} />}
               {isOldUser ? 'Log In' : 'Register'}
@@ -284,7 +294,8 @@ const VerifyButtonContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   gap: '10px',
-  width: '100%'
+  width: '100%',
+  alignItems: 'flex-end'
 }));
 
 const VerifyButton = styled(Button)(({ theme }) => ({

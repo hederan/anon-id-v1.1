@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, FormControlLabel, Switch } from '@mui/material';
 import { styled } from '@mui/system';
 import { useState } from 'react';
 import { Camera } from 'src/components/FaceLiveness/camera';
@@ -12,10 +12,17 @@ export const MFR = () => {
   const [confidence, setConfidence] = useState(0);
   const [outline, setOutline] = useState('#ff0000');
   const [screenshot, setScreenshot] = useState(null);
+  const [isBright, setBright] = useState(false);
+
   const turnOnCamera = () => {
     setCameraOpen(true);
     setIsDetected(false);
   };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBright(event.target.checked);
+  };
+
   return (
     <MFRWrapper>
       <MFRContainer>
@@ -40,9 +47,14 @@ export const MFR = () => {
               setScreenshot={setScreenshot}
               confidence={confidence}
               setConfidence={setConfidence}
+              isBright={isBright}
             />
           </FaceScanArea>
           <ErrorText sx={{ color: outline }}>{error !== '' && error}</ErrorText>
+          <FormControlLabel
+            control={<Switch color="warning" checked={isBright} onChange={handleChange} />}
+            label="Turn on the light"
+          />
           <UploadButton>Upload</UploadButton>
         </MFRAction>
       </MFRContainer>

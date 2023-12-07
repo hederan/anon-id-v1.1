@@ -1,5 +1,5 @@
 /* eslint-disable  @typescript-eslint/no-misused-promises */
-import { Box, Button } from '@mui/material';
+import { Box, Button, FormControlLabel, Switch } from '@mui/material';
 import { styled } from '@mui/system';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -25,6 +25,7 @@ export const ReRegister = () => {
   const [isReRegisterLoading, setReRegisterLoading] = useState(false);
   const [errorStatus, setErrorStatus] = useState<number | null>(null);
   const { user, setUser, setLoggedIn } = useStore();
+  const [isBright, setBright] = useState(false);
   const navigate = useNavigate();
 
   const turnOnCamera = () => {
@@ -61,6 +62,10 @@ export const ReRegister = () => {
     }
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setBright(event.target.checked);
+  };
+
   return isLoading ? (
     <AnonRegisterLoader loaderText="Registering" />
   ) : (
@@ -85,9 +90,14 @@ export const ReRegister = () => {
               setScreenshot={setScreenshot}
               confidence={confidence}
               setConfidence={setConfidence}
+              isBright={isBright}
             />
           </FaceScanArea>
           <ErrorText sx={{ color: outline }}>{error !== '' && error}</ErrorText>
+          <FormControlLabel
+            control={<Switch color="warning" checked={isBright} onChange={handleChange} />}
+            label="Turn on the light"
+          />
           <ReRegisterButton disabled={isLoading} onClick={reRegisterFace}>
             Re-Register with Selfie
           </ReRegisterButton>

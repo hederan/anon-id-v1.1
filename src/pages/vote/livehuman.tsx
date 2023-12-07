@@ -24,6 +24,10 @@ export const LiveHuman = () => {
   const [voteData, setVoteData] = useState<voteDataTypes[]>([]);
   const [loadedImgCount, setLoadedImgCount] = useState(0);
 
+  const handleImageLoad = () => {
+    setLoadedImgCount((prevCount) => prevCount + 1);
+  };
+
   const getImageUrl = async () => {
     console.log({ VotingPage: user });
     if (user !== '') {
@@ -110,8 +114,7 @@ export const LiveHuman = () => {
                   imageUrl={imageUrl}
                   isSelected={voteData.findIndex((data) => data.imageUrl === imageUrl) >= 0}
                   onClick={() => handleImageClick(imageUrl)}
-                  loadedImgCount={loadedImgCount}
-                  setLoadedImgCount={setLoadedImgCount}
+                  onLoad={handleImageLoad}
                 />
               ))}
             </LiveHumanItems>
@@ -121,7 +124,7 @@ export const LiveHuman = () => {
           <LiveHumanButton sx={{ backgroundColor: '' }} onClick={() => navigate('/dashboard')}>
             Return Home
           </LiveHumanButton>
-          <LiveHumanButton onClick={handleVotingClick} disabled={isLoading || loadedImgCount !== imageUrls.length - 1}>
+          <LiveHumanButton onClick={handleVotingClick} disabled={isLoading || loadedImgCount !== imageUrls.length}>
             {isLoading && <CircularProgress size={24} sx={{ color: '#FFFFFF' }} />}
             Finish Voting
           </LiveHumanButton>
@@ -188,18 +191,16 @@ interface VotingImageProps {
   imageUrl: string;
   isSelected: boolean;
   onClick: () => void;
-  loadedImgCount: number;
-  setLoadedImgCount: (value: number) => void;
+  onLoad: () => void;
 }
 
 const VotingImage = (props: VotingImageProps) => {
-  const { imageUrl, isSelected, onClick, loadedImgCount, setLoadedImgCount } = props;
-  console.log({ VotingImage: imageUrl });
+  const { imageUrl, isSelected, onClick, onLoad } = props;
   const [isLoad, setLoad] = useState(false);
   useEffect(() => {
+    console.log('VotingImage');
     if (isLoad) {
-      const _loadedImgCount = loadedImgCount + 1;
-      setLoadedImgCount(_loadedImgCount);
+      onLoad();
     }
   }, [isLoad]);
   return (

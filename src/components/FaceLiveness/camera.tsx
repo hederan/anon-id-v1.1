@@ -23,6 +23,7 @@ interface CameraProps {
   setScreenshot: (value: any) => void;
   confidence: number;
   setConfidence: (value: number) => void;
+  isBright: boolean;
 }
 
 export const Camera = (props: CameraProps) => {
@@ -40,7 +41,8 @@ export const Camera = (props: CameraProps) => {
     outline,
     setOutline,
     confidence,
-    setConfidence
+    setConfidence,
+    isBright
   } = props;
   const webcamRef = useRef<Webcam | null>(null);
   const detection = useRef<any>();
@@ -106,6 +108,8 @@ export const Camera = (props: CameraProps) => {
     setError('There was a problem accessing the Webcam. Grant permission and reload the page.');
   };
 
+  const brightness = 150; // adjust this value to change brightness
+
   return (
     <>
       {isCameraOpen ? (
@@ -120,7 +124,12 @@ export const Camera = (props: CameraProps) => {
             videoConstraints={{ facingMode: 'user' }}
             onUserMedia={handleStreamVideo}
             onUserMediaError={handleCameraError}
-            style={{ borderRadius: '50%', width: '500px', height: '500px' }}
+            style={{
+              borderRadius: '50%',
+              width: '500px',
+              height: '500px',
+              filter: isBright ? `brightness(${brightness}%)` : 'inherit'
+            }}
           />
         </WebcamContainer>
       ) : isDetected ? (

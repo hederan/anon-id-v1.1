@@ -21,6 +21,10 @@ export const MatchFace = () => {
   const [loadedImgCount, setLoadedImgCount] = useState(0);
   const navigate = useNavigate();
 
+  const handleImageLoad = () => {
+    setLoadedImgCount((prevCount) => prevCount + 1);
+  };
+
   const getMatchFaceImages = async () => {
     if (username == null) return;
     try {
@@ -85,8 +89,7 @@ export const MatchFace = () => {
               <MatchFaceImg
                 src={`https://cloudflare-ipfs.com/ipfs/${oldImg}`}
                 alt="match-image"
-                loadedImgCount={loadedImgCount}
-                setLoadedImgCount={setLoadedImgCount}
+                onLoad={handleImageLoad}
               />
             </MatchFaceItem>
             <MatchFaceItem>
@@ -94,8 +97,7 @@ export const MatchFace = () => {
               <MatchFaceImg
                 src={`https://cloudflare-ipfs.com/ipfs/${newImg}`}
                 alt="match-image"
-                loadedImgCount={loadedImgCount}
-                setLoadedImgCount={setLoadedImgCount}
+                onLoad={handleImageLoad}
               />
             </MatchFaceItem>
           </MatchFaceItemContainer>
@@ -192,17 +194,15 @@ const MatchFaceItemTitle = styled(Box)(({ theme }) => ({
 interface MatchFaceImgProps {
   src: string;
   alt: string;
-  loadedImgCount: number;
-  setLoadedImgCount: (value: number) => void;
+  onLoad: () => void;
 }
 
 const MatchFaceImg = (props: MatchFaceImgProps) => {
-  const { src, alt, loadedImgCount, setLoadedImgCount } = props;
+  const { src, alt, onLoad } = props;
   const [isLoad, setLoad] = useState(false);
   useEffect(() => {
     if (isLoad) {
-      const _loadedImgCount = loadedImgCount + 1;
-      setLoadedImgCount(_loadedImgCount);
+      onLoad();
     }
   }, [isLoad]);
   return (
