@@ -70,9 +70,9 @@ export const Dashboard = () => {
           <ActionButton bgcolor="#4532CE" onClick={returnBackToClient}>
             Click here to sign into “{clientName}”
           </ActionButton>
-          <ActionButton bgcolor="#4532CE" disabled={isLimitVote}>
+          {/* <ActionButton bgcolor="#4532CE" disabled={isLimitVote}>
             Click here to SCANQR CODE/TAP NFC to use ANON ID in PERSON (Coming soon)
-          </ActionButton>
+          </ActionButton> */}
           <ActionButton bgcolor="#4532CE" disabled={isLimitVote} onClick={() => navigate('/live-human')}>
             Click here to Verify OTHER USER FACES are LIVE HUMANS and Earn Rewards (Alpha Stage)
           </ActionButton>
@@ -83,12 +83,12 @@ export const Dashboard = () => {
           <ActionButton bgcolor="#4532CE" onClick={() => navigate('/profile')}>
             Click Here to See Points/Level/Rewards (Coming Soon)
           </ActionButton>
-          <ActionButton bgcolor="#7F00FF" disabled={isLimitVote}>
+          {/* <ActionButton bgcolor="#7F00FF" disabled={isLimitVote}>
             FUTURE FEATURE: Sign in while matching faces for a more secure authentication that yields rewards!
-          </ActionButton>
-          <ActionButton bgcolor="#7F00FF">
+          </ActionButton> */}
+          {/* <ActionButton bgcolor="#7F00FF">
             Delete Account and Images (username can be claimed by someone else)
-          </ActionButton>
+          </ActionButton> */}
         </DashboardAction>
       </DashboardContainer>
     </DashboardWrapper>

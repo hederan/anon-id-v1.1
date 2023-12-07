@@ -18,6 +18,7 @@ export const MatchFace = () => {
   const [voteUser, setVoteUser] = useState('');
   const [isLoading, setLoading] = useState(true);
   const [isLoader, setLoader] = useState(false);
+  const [loadedImgCount, setLoadedImgCount] = useState(0);
   const navigate = useNavigate();
 
   const getMatchFaceImages = async () => {
@@ -81,11 +82,21 @@ export const MatchFace = () => {
           <MatchFaceItemContainer>
             <MatchFaceItem>
               <MatchFaceItemTitle>Old one</MatchFaceItemTitle>
-              <MatchFaceImg src={`https://cloudflare-ipfs.com/ipfs/${oldImg}`} alt="match-image" />
+              <MatchFaceImg
+                src={`https://cloudflare-ipfs.com/ipfs/${oldImg}`}
+                alt="match-image"
+                loadedImgCount={loadedImgCount}
+                setLoadedImgCount={setLoadedImgCount}
+              />
             </MatchFaceItem>
             <MatchFaceItem>
               <MatchFaceItemTitle>New one</MatchFaceItemTitle>
-              <MatchFaceImg src={`https://cloudflare-ipfs.com/ipfs/${newImg}`} alt="match-image" />
+              <MatchFaceImg
+                src={`https://cloudflare-ipfs.com/ipfs/${newImg}`}
+                alt="match-image"
+                loadedImgCount={loadedImgCount}
+                setLoadedImgCount={setLoadedImgCount}
+              />
             </MatchFaceItem>
           </MatchFaceItemContainer>
         </MatchFaceContainer>
@@ -93,7 +104,7 @@ export const MatchFace = () => {
       <MatchButtonContainer>
         <MatchButton
           name="Unvote"
-          disabled={oldImg === '' || isLoader}
+          disabled={oldImg === '' || isLoader || loadedImgCount !== 2}
           onClick={() => setMatchImages(false)}
           variant="contained"
           startIcon={<Close />}
@@ -103,7 +114,7 @@ export const MatchFace = () => {
         </MatchButton>
         <MatchButton
           name="Vote"
-          disabled={oldImg === '' || isLoader}
+          disabled={oldImg === '' || isLoader || loadedImgCount !== 2}
           onClick={() => setMatchImages(true)}
           variant="contained"
           startIcon={<Check />}
@@ -181,11 +192,19 @@ const MatchFaceItemTitle = styled(Box)(({ theme }) => ({
 interface MatchFaceImgProps {
   src: string;
   alt: string;
+  loadedImgCount: number;
+  setLoadedImgCount: (value: number) => void;
 }
 
 const MatchFaceImg = (props: MatchFaceImgProps) => {
-  const { src, alt } = props;
+  const { src, alt, loadedImgCount, setLoadedImgCount } = props;
   const [isLoad, setLoad] = useState(false);
+  useEffect(() => {
+    if (isLoad) {
+      const _loadedImgCount = loadedImgCount + 1;
+      setLoadedImgCount(_loadedImgCount);
+    }
+  }, [isLoad]);
   return (
     <>
       {!isLoad && <MatchFaceImgContainer src={ImgLoadPng} alt={'default-img'} />}

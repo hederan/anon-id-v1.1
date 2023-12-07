@@ -22,6 +22,7 @@ export const LiveHuman = () => {
   const [isLoading, setLoading] = useState(false);
   const [isImageLoading, setImageLoading] = useState(false);
   const [voteData, setVoteData] = useState<voteDataTypes[]>([]);
+  const [loadedImgCount, setLoadedImgCount] = useState(0);
 
   const getImageUrl = async () => {
     console.log({ VotingPage: user });
@@ -109,6 +110,8 @@ export const LiveHuman = () => {
                   imageUrl={imageUrl}
                   isSelected={voteData.findIndex((data) => data.imageUrl === imageUrl) >= 0}
                   onClick={() => handleImageClick(imageUrl)}
+                  loadedImgCount={loadedImgCount}
+                  setLoadedImgCount={setLoadedImgCount}
                 />
               ))}
             </LiveHumanItems>
@@ -118,7 +121,7 @@ export const LiveHuman = () => {
           <LiveHumanButton sx={{ backgroundColor: '' }} onClick={() => navigate('/dashboard')}>
             Return Home
           </LiveHumanButton>
-          <LiveHumanButton onClick={handleVotingClick} disabled={isLoading}>
+          <LiveHumanButton onClick={handleVotingClick} disabled={isLoading || loadedImgCount !== imageUrls.length - 1}>
             {isLoading && <CircularProgress size={24} sx={{ color: '#FFFFFF' }} />}
             Finish Voting
           </LiveHumanButton>
@@ -185,12 +188,20 @@ interface VotingImageProps {
   imageUrl: string;
   isSelected: boolean;
   onClick: () => void;
+  loadedImgCount: number;
+  setLoadedImgCount: (value: number) => void;
 }
 
 const VotingImage = (props: VotingImageProps) => {
-  const { imageUrl, isSelected, onClick } = props;
+  const { imageUrl, isSelected, onClick, loadedImgCount, setLoadedImgCount } = props;
   console.log({ VotingImage: imageUrl });
   const [isLoad, setLoad] = useState(false);
+  useEffect(() => {
+    if (isLoad) {
+      const _loadedImgCount = loadedImgCount + 1;
+      setLoadedImgCount(_loadedImgCount);
+    }
+  }, [isLoad]);
   return (
     <>
       <VotingImageContainer selected={isSelected && isLoad ? 1 : 0} onClick={isLoad ? onClick : undefined}>
